@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SAMSUNG\\meus_projetos\\TodoApi\\TodoApi\\TodoApi.csproj": {}
+    "C:\\Users\\Yslan\\MeusProjetos\\C#\\WebApi\\PixApi\\w3\\TodoApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SAMSUNG\\meus_projetos\\TodoApi\\TodoApi\\TodoApi.csproj": {
+    "C:\\Users\\Yslan\\MeusProjetos\\C#\\WebApi\\PixApi\\w3\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SAMSUNG\\meus_projetos\\TodoApi\\TodoApi\\TodoApi.csproj",
+        "projectUniqueName": "C:\\Users\\Yslan\\MeusProjetos\\C#\\WebApi\\PixApi\\w3\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "C:\\Users\\SAMSUNG\\meus_projetos\\TodoApi\\TodoApi\\TodoApi.csproj",
-        "packagesPath": "C:\\Users\\SAMSUNG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SAMSUNG\\meus_projetos\\TodoApi\\TodoApi\\obj\\",
+        "projectPath": "C:\\Users\\Yslan\\MeusProjetos\\C#\\WebApi\\PixApi\\w3\\TodoApi.csproj",
+        "packagesPath": "C:\\Users\\Yslan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yslan\\MeusProjetos\\C#\\WebApi\\PixApi\\w3\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\SAMSUNG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Yslan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +27,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -49,6 +51,28 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.66, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.8, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -68,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

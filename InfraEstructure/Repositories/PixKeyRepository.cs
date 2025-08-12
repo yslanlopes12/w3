@@ -1,35 +1,47 @@
+using Dapper;
 using Domain.Entities;
-using InfraStructure.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 
-namespace InfraEstructure.Repositories
+namespace Infrastructure.Repositories
 {
-    public class PixKeyRepository : IPixKeyRepository
+    public class PixKeyRepository
     {
-        private readonly AppContext _context;
-        public PixKeyRepository(AppDbContext context)
+        private readonly DapperContext _context;
+
+        public PixKeyRepository(DapperContext context)
         {
             _context = context;
         }
-        public async Task<PixKey?> GetByIdAsync(Guid id) =>
-        await _context.PixKeys.FirstOrDefaultAsync(p => p.Id == id);
-        public async Task<PixKey?> GetByKeyAsync(string key) =>
-        await _context.PixKeys.FirstOrDefaultAsync(p => p.Key == key);
 
-        public async Task<IEnumerable<PixKey>> GetByAccountIdAsync(Guid accountId) =>
-        await _context.PixKeys.Where(p => p.AccountId == accountId).ToListAsync();
-
-        public async Task AddAsync(PixKey pixKey)
+        public async Task<int> AddAsync(PixKey pixKey)
         {
-            await _context.PixKeys.AddAsync(pixKey);
-            await _context.SaveChangesAsync();
+            var sql = @"
+                INSERT INTO pix_keys (id, account_id, key, type, active, created_at)
+                VALUES (@Id, @AccountId, @Key, @Type, @Active, @CreatedAt)";
+            
+            using var connection = _context.CreateConnection();
+            return await connection.ExecuteAsync(sql, pixKey);
         }
 
-        public async Task UpdateAsync(PixKey pixKey)
+        public async Task<PixKey?> GetByKeyAsync(string key)
         {
-            _context.PixKeys.Update(pixKey);
-            await _context.SaveChangesAsync();
+            var sql = "SELECT * FROM pix_keys WHERE key = @Key";
+            using var connection = _context.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<PixKey>(sql, new { Key = key });
+        }
+
+        public async Task<IEnumerable<PixKey>> GetByAccountIdAsync(Guid accountId)
+        {
+            var sql = "SELECT * FROM pix_keys WHERE account_id = @AccountId";
+            using var connection = _context.CreateConnection();
+            return await connection.QueryAsync<PixKey>(sql, new { AccountId = accountId });
+        }
+
+        public async Task<int> CancelAsync(Guid id)
+        {
+            var sql = "UPDATE pix_keys SET active = false, cancelled_at = NOW() WHERE id = @Id";
+            using var connection = _context.CreateConnection();
+            return await connection.ExecuteAsync(sql, new { Id = id });
         }
     }
-
 }

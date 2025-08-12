@@ -6,6 +6,6 @@ namespace Domain.ValueObjects
         CNPJ,
         Email,
         Phone,
-        EVP // Chave aleatória/dinâmica
+        EVP
     }
 }
