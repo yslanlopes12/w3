@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace InfraStructure.Repositories
+namespace Infrastructure.Repositories
 {
     public interface IPixKeyRepository
     {

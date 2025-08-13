@@ -6,8 +6,8 @@ namespace Api.Dto
     {
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
-        public string Key { get; set; } = string.Empty;
-        public PixKeyType Type { get; set; }
-        public bool Active { get; set; }
+        public string ChaveValor { get; set; } = string.Empty;
+        public PixKeyType PixType { get; set; }
+        public bool Status { get; set; }
     }
 }

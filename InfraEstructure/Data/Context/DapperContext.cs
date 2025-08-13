@@ -1,21 +1,20 @@
 using System.Data;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
+using Microsoft.Data.SqlClient;
 
 namespace Infrastructure.Data
 {
     public class DapperContext
     {
-        private readonly IConfiguration _config;
         private readonly string _connectionString;
 
-        public DapperContext(IConfiguration config)
+        public DapperContext(IConfiguration configuration)
         {
-            _config = config;
-            _connectionString = _config.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public IDbConnection CreateConnection()
-            => new NpgsqlConnection(_connectionString);
+        {
+            return new SqlConnection(_connectionString);
+        }
     }
 }

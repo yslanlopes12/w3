@@ -3,7 +3,7 @@ using Domain.Entities;
 using Domain.Services;
 using Domain.ValueObjects;
 using Domain.Repositories;
-using InfraStructure.Repositories;
+using Infrastructure.Repositories;
 
 namespace Services
 {
@@ -19,52 +19,51 @@ namespace Services
         }
 
         public async Task<PixKeyResponseDto> CreateAsync(PixKeyCreateDto dto)
-        {
-            var account = await _accountRepository.GetByIdAsync(dto.AccountId);
-            if (account is null)
-                throw new Exception("Conta não encontrada.");
+{
+    var account = await _accountRepository.GetByIdAsync(dto.AccountId);
+    if (account is null)
+        throw new Exception("Conta não encontrada.");
 
-            var existingKey = await _pixKeyRepository.GetByKeyAsync(dto.Key);
-            if (existingKey != null)
-                throw new Exception("Chave PIX já está em uso.");
+    // Gere a chave Pix automaticamente (exemplo simples, use sua lógica)
+    var chavePix = Guid.NewGuid().ToString();
 
-            var pixKey = new PixKey
-            {
-                Id = Guid.NewGuid(),
-                AccountId = dto.AccountId,
-                Key = dto.Key,
-                Type = dto.Type
-            };
+    var pixKey = new PixKey
+    {
+        AccountId = dto.AccountId,
+        ChaveValor = chavePix,
+        PixType = (short)dto.Type,
+        Status = true,
+        DataCriacao = DateTime.UtcNow
+    };
 
-            await _pixKeyRepository.AddAsync(pixKey);
+    await _pixKeyRepository.AddAsync(pixKey);
 
-            return new PixKeyResponseDto
-            {
-                Id = pixKey.Id,
-                AccountId = pixKey.AccountId,
-                Key = pixKey.Key,
-                Type = pixKey.Type,
-                Active = pixKey.Active
-            };
-        }
+    return new PixKeyResponseDto
+    {
+        Id = pixKey.Id, // O banco pode retornar o id gerado, se configurado
+        ChaveValor = pixKey.ChaveValor,
+        PixType = (PixKeyType)pixKey.PixType,
+        Status = pixKey.Status
+    };
+}
 
         public async Task<bool> CancelAsync(Guid id)
         {
             var pixKey = await _pixKeyRepository.GetByIdAsync(id);
-            if (pixKey == null || !pixKey.Active)
-                return false;
+           if (pixKey == null || !pixKey.Status) // Corrigido
+    return false;
 
-            pixKey.Active = false;
-            pixKey.CancelledAt = DateTime.UtcNow;
+pixKey.Status = false; // Corrigido
+pixKey.DataCancelamento = DateTime.UtcNow; // Corrigido
 
-            await _pixKeyRepository.UpdateAsync(pixKey);
-            return true;
+await _pixKeyRepository.UpdateAsync(pixKey);
+return true;
         }
 
         public async Task<PixKeyValidationDto> ValidateAsync(string key)
         {
             var pixKey = await _pixKeyRepository.GetByKeyAsync(key);
-            if (pixKey != null && pixKey.Active)
+            if (pixKey != null && pixKey.Status)
                 return new PixKeyValidationDto { Valid = true, Message = "Chave válida." };
 
             return new PixKeyValidationDto { Valid = false, Message = "Chave inválida ou inativa." };
@@ -77,10 +76,23 @@ namespace Services
             {
                 Id = k.Id,
                 AccountId = k.AccountId,
-                Key = k.Key,
-                Type = k.Type,
-                Active = k.Active
+                ChaveValor = k.ChaveValor,
+                PixType = (PixKeyType)k.PixType,
+                Status = k.Status
             });
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, PixKeyUpdateDto dto)
+        {
+            var pixKey = await _pixKeyRepository.GetByIdAsync(id);
+            if (pixKey == null)
+                return false;
+
+            pixKey.PixType = (short)dto.PixType;
+            pixKey.Status = dto.Status;
+
+            await _pixKeyRepository.UpdateAsync(pixKey);
+            return true;
         }
     }
 }

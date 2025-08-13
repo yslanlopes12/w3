@@ -6,10 +6,10 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
-        public string Key { get; set; } = string.Empty;
-        public PixKeyType Type { get; set; }
-        public bool Active { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? CancelledAt { get; set; }
+        public short PixType { get; set; }
+        public string ChaveValor { get; set; } = string.Empty;
+        public bool Status { get; set; } = true;
+        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        public DateTime? DataCancelamento { get; set; }
     }
 }
