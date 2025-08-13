@@ -1,20 +1,21 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 
+
 namespace Infrastructure.Data
 {
-    public class DapperContext
+    public class SqlContext
     {
+        private readonly IConfiguration _configuration;
         private readonly string _connectionString;
 
-        public DapperContext(IConfiguration configuration)
+        public SqlContext(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnections");
         }
 
         public IDbConnection CreateConnection()
-        {
-            return new SqlConnection(_connectionString);
-        }
+            => new SqlConnection(_connectionString);
     }
 }
