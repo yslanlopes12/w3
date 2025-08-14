@@ -2,13 +2,14 @@ using Dapper;
 using Domain.Entities;
 using Infrastructure.Data;
 
+
 namespace Infrastructure.Repositories
 {
     public class PixKeyRepository : IPixKeyRepository
     {
-        private readonly DapperContext _context;
+        private readonly SqlContext _context;
 
-        public PixKeyRepository(DapperContext context)
+        public PixKeyRepository(SqlContext context)
         {
             _context = context;
         }

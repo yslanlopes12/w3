@@ -31,11 +31,11 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        // GET /api/contas/{id}/pix/chaves
-        [HttpGet("/api/contas/{id}/pix/chaves")]
-        public async Task<IActionResult> GetByAccountId(Guid id)
+        // GET /api/contas/{accountId}/pix/chaves
+        [HttpGet("/api/contas/{accountId}/pix/chaves")]
+        public async Task<IActionResult> GetByAccountId(Guid accountId)
         {
-            var result = await _pixKeyService.GetByAccountIdAsync(id);
+            var result = await _pixKeyService.GetByAccountIdAsync(accountId);
             return Ok(result);
         }
 

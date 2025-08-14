@@ -7,13 +7,14 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar DapperContext e IDbConnection para SQL Server
-builder.Services.AddSingleton<DapperContext>();
+// Configurar SqlContext e IDbConnection para SQL Server
+builder.Services.AddSingleton<SqlContext>();
 builder.Services.AddScoped<IDbConnection>(sp =>
 {
-    var context = sp.GetRequiredService<DapperContext>();
-    return context.CreateConnection(); // Cria conexão SQL Server
+    var context = sp.GetRequiredService<SqlContext>();
+    return context.CreateConnection();
 });
+
 
 // Registrar repositórios
 builder.Services.AddScoped<IPixKeyRepository, PixKeyRepository>();

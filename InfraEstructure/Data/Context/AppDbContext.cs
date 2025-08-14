@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Mapeamento opcional
+     
             modelBuilder.Entity<PixKey>().ToTable("pix_keys");
         }
     }
