@@ -15,7 +15,6 @@ builder.Services.AddScoped<IDbConnection>(sp =>
     return context.CreateConnection();
 });
 
-
 // Registrar repositórios
 builder.Services.AddScoped<IPixKeyRepository, PixKeyRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -30,7 +29,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

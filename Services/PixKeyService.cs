@@ -23,13 +23,22 @@ namespace Services
         // ----------------------------
         public async Task<PixKeyResponseDto> CreateAsync(PixKeyCreateDto dto)
         {
+           
             var account = await _accountRepository.GetByIdAsync(dto.AccountId);
             if (account is null)
                 throw new Exception("Conta não encontrada.");
 
-            // Gera chave Pix (lógica simples — pode ser substituída por outra)
-            var chavePix = Guid.NewGuid().ToString();
+            // Usa chave informada ou gera aleatória
+            var chavePix = !string.IsNullOrWhiteSpace(dto.ChaveValor)
+                ? dto.ChaveValor.Trim()
+                : Guid.NewGuid().ToString();
 
+            // Verifica se a chave já existe para outra conta
+            var existingKey = await _pixKeyRepository.GetByKeyAsync(chavePix);
+            if (existingKey != null && existingKey.AccountId != dto.AccountId)
+                throw new Exception("Essa chave Pix já está associada a outra conta.");
+
+            // Cria a chave
             var pixKey = new PixKey
             {
                 AccountId = dto.AccountId,
@@ -41,6 +50,7 @@ namespace Services
 
             await _pixKeyRepository.AddAsync(pixKey);
 
+            // Retorna resposta
             return new PixKeyResponseDto
             {
                 Id = pixKey.Id,
@@ -49,6 +59,7 @@ namespace Services
                 Status = pixKey.Status
             };
         }
+
 
         // ----------------------------
         // Cancelar chave Pix

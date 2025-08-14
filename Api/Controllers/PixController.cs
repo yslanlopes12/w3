@@ -15,13 +15,33 @@ namespace Api.Controllers
             _pixKeyService = pixKeyService;
         }
 
+
         // POST /api/pix/chaves
         [HttpPost("chaves")]
         public async Task<IActionResult> CriarChave([FromBody] PixKeyCreateDto dto)
         {
-            var result = await _pixKeyService.CreateAsync(dto);
-            return Ok(result);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var result = await _pixKeyService.CreateAsync(dto);
+
+
+                return CreatedAtAction(
+                    nameof(ValidarChave),
+                    new { chave = result.ChaveValor },
+                    result
+                );
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
         }
+
 
         // GET /api/pix/chaves/{chave}/validar
         [HttpGet("chaves/{chave}/validar")]
