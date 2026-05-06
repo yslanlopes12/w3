@@ -7,7 +7,7 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar SqlContext e IDbConnection para SQL Server
+
 builder.Services.AddSingleton<SqlContext>();
 builder.Services.AddScoped<IDbConnection>(sp =>
 {
@@ -15,14 +15,14 @@ builder.Services.AddScoped<IDbConnection>(sp =>
     return context.CreateConnection();
 });
 
-// Registrar repositórios
+
 builder.Services.AddScoped<IPixKeyRepository, PixKeyRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
-// Registrar serviços
+
 builder.Services.AddScoped<IPixKeyService, PixKeyService>();
 
-// Configurar controllers e Swagger
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
